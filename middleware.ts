@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
+
+const secret = new TextEncoder().encode(
+  process.env.JWT_SECRET || 'fallback-secret-key-change-in-production'
+);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,10 +19,20 @@ export async function middleware(request: NextRequest) {
                           (pathname.startsWith('/api') && !pathname.startsWith('/api/auth/login'));
   
   if (isProtectedRoute || pathname === '/') {
-    const authSession = request.cookies.get('auth-session')?.value;
+    const token = request.cookies.get('auth-session')?.value;
     
-    if (authSession !== 'authenticated') {
+    if (!token) {
       return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    try {
+      // Verify the JWT token
+      await jwtVerify(token, secret);
+    } catch (error) {
+      // Invalid or expired token, redirect to login
+      const response = NextResponse.redirect(new URL('/login', request.url));
+      response.cookies.delete('auth-session');
+      return response;
     }
     
     // Redirect authenticated root access to admin
