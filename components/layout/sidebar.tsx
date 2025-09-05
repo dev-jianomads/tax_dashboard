@@ -8,7 +8,8 @@ import Image from 'next/image';
 import { 
   BarChart3, 
   Users, 
-  LogOut
+  LogOut,
+  MessageSquare
 } from 'lucide-react';
 
 const navigation = [
@@ -16,6 +17,11 @@ const navigation = [
     name: 'Dashboard (Admin)',
     href: '/admin',
     icon: BarChart3,
+  },
+  {
+    name: 'Feedback',
+    href: '/admin/feedback',
+    icon: MessageSquare,
   },
   {
     name: 'User View',

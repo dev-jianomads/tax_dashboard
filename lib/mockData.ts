@@ -22,6 +22,8 @@ export const mockChats = [
     comment_sel0: '',
     comment_add0: '',
     updated_on: '2024-01-15T10:35:00Z',
+    comment_sele: 'Great explanation of tax deductions',
+    comment_add: 'Very helpful for my business planning',
   },
   {
     id: 2,
@@ -45,6 +47,8 @@ export const mockChats = [
     comment_sel0: '',
     comment_add0: '',
     updated_on: '2024-01-14T14:25:00Z',
+    comment_sele: 'Comprehensive investment advice',
+    comment_add: 'Exactly what I needed for my portfolio',
   },
   {
     id: 3,
@@ -68,6 +72,8 @@ export const mockChats = [
     comment_sel0: '',
     comment_add0: '',
     updated_on: '2024-01-13T09:20:00Z',
+    comment_sele: 'Good basic information',
+    comment_add: 'Could use more specific examples',
   },
 ];
 
@@ -126,12 +132,20 @@ export function getMockMetrics(filters: { email?: string; from?: string; to?: st
   const avgProcessTime = scenariosCount > 0 ? totalProcessTime / scenariosCount : 0;
   const engagement = scenariosCount > 0 ? 2.5 : 0; // Mock engagement rate
 
+  // Calculate feedback metrics
+  const feedbackChats = filteredChats.filter(chat => chat.feedback !== null && chat.feedback !== undefined);
+  const totalFeedback = feedbackChats.length;
+  const avgFeedback = totalFeedback > 0 
+    ? feedbackChats.reduce((sum, chat) => sum + chat.feedback, 0) / totalFeedback 
+    : 0;
   return {
     scenariosCount,
     latestFive,
     totalProcessTime,
     avgProcessTime,
     engagement,
+    totalFeedback,
+    avgFeedback,
   };
 }
 
@@ -183,4 +197,42 @@ export function getMockScenario(id: number) {
   const conversations = mockConversations.filter(c => c.chat_id === id);
   
   return { chat, conversations };
+}
+
+export function getMockFeedback(filters: { 
+  email?: string; 
+  from?: string; 
+  to?: string; 
+}) {
+  let filteredChats = mockChats.filter(chat => 
+    chat.feedback !== null && chat.feedback !== undefined
+  );
+
+  if (filters.email) {
+    filteredChats = filteredChats.filter(chat => chat.email === filters.email);
+  }
+
+  if (filters.from) {
+    filteredChats = filteredChats.filter(chat => 
+      new Date(chat.created_at) >= new Date(filters.from!)
+    );
+  }
+
+  if (filters.to) {
+    filteredChats = filteredChats.filter(chat => 
+      new Date(chat.created_at) <= new Date(filters.to! + 'T23:59:59.999Z')
+    );
+  }
+
+  return filteredChats
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .map(chat => ({
+      id: chat.id,
+      created_at: chat.created_at,
+      title: chat.title,
+      email: chat.email,
+      feedback: chat.feedback,
+      comment_sele: chat.comment_sele || '',
+      comment_add: chat.comment_add || '',
+    }));
 }

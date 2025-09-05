@@ -12,8 +12,11 @@ import {
   Clock, 
   TrendingUp, 
   Download,
-  Mail
+  Mail,
+  ThumbsUp,
+  Star
 } from 'lucide-react';
+import Link from 'next/link';
 
 interface Metrics {
   scenariosCount: number;
@@ -26,6 +29,8 @@ interface Metrics {
   totalProcessTime: number;
   avgProcessTime: number;
   engagement: number;
+  totalFeedback: number;
+  avgFeedback: number;
 }
 
 export default function AdminPage() {
@@ -173,6 +178,24 @@ export default function AdminPage() {
             value={isLoadingMetrics ? '...' : metrics ? `${metrics.engagement.toFixed(1)}` : 'No Scenarios'}
             icon={TrendingUp}
             subtitle="Messages per scenario"
+          />
+        </div>
+
+        {/* Feedback KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Link href="/admin/feedback">
+            <KpiCard
+              title="Total Feedback"
+              value={isLoadingMetrics ? '...' : metrics?.totalFeedback || 0}
+              icon={ThumbsUp}
+              subtitle="Click to view detailed feedback"
+            />
+          </Link>
+          <KpiCard
+            title="Average Feedback Score"
+            value={isLoadingMetrics ? '...' : metrics ? `${metrics.avgFeedback.toFixed(2)}` : '0.00'}
+            icon={Star}
+            subtitle="Range: -1 to +1"
           />
         </div>
 

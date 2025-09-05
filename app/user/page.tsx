@@ -11,7 +11,9 @@ import {
   MessageSquare, 
   Clock, 
   TrendingUp,
-  User
+  User,
+  ThumbsUp,
+  Star
 } from 'lucide-react';
 
 interface Metrics {
@@ -25,6 +27,8 @@ interface Metrics {
   totalProcessTime: number;
   avgProcessTime: number;
   engagement: number;
+  totalFeedback: number;
+  avgFeedback: number;
 }
 
 export default function UserPage() {
@@ -153,6 +157,22 @@ export default function UserPage() {
                 value={isLoadingMetrics ? '...' : metrics ? `${metrics.engagement.toFixed(1)}` : 'No Scenarios'}
                 icon={TrendingUp}
                 subtitle="Messages per scenario"
+              />
+            </div>
+
+            {/* Feedback KPI Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <KpiCard
+                title="Total Feedback"
+                value={isLoadingMetrics ? '...' : metrics?.totalFeedback || 0}
+                icon={ThumbsUp}
+                subtitle="Feedback responses given"
+              />
+              <KpiCard
+                title="Average Feedback Score"
+                value={isLoadingMetrics ? '...' : metrics ? `${metrics.avgFeedback.toFixed(2)}` : '0.00'}
+                icon={Star}
+                subtitle="Range: -1 to +1"
               />
             </div>
 

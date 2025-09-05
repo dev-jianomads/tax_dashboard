@@ -73,7 +73,16 @@ export async function GET(request: NextRequest) {
         totalProcessTime,
         avgProcessTime,
         engagement,
+        totalFeedback: 0,
+        avgFeedback: 0,
       };
+
+      // Calculate feedback metrics from real data
+      const feedbackChats = chats.filter(chat => chat.feedback !== null && chat.feedback !== undefined);
+      metrics.totalFeedback = feedbackChats.length;
+      metrics.avgFeedback = metrics.totalFeedback > 0 
+        ? feedbackChats.reduce((sum, chat) => sum + chat.feedback, 0) / metrics.totalFeedback 
+        : 0;
 
       return NextResponse.json(metrics);
     } catch (supabaseError) {
