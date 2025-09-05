@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       
       let query = client
         .from('chat')
-        .select('id, created_at, title, email, feedback, comment_sele, comment_add')
+        .select('id, created_at, title, email, feedback, comment_selection, comment_additional')
         .not('feedback', 'is', null);
       
       if (filters.email) {

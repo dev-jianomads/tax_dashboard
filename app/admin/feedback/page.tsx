@@ -16,8 +16,8 @@ interface FeedbackItem {
   title: string;
   email: string;
   feedback: number;
-  comment_sele: string;
-  comment_add: string;
+  comment_selection: string[];
+  comment_additional: string;
 }
 
 export default function FeedbackPage() {
@@ -143,28 +143,28 @@ export default function FeedbackPage() {
                       </div>
                     </div>
 
-                    {(item.comment_sele || item.comment_add) && (
+                    {(item.comment_selection?.length > 0 || item.comment_additional) && (
                       <div className="space-y-3">
-                        {item.comment_sele && (
+                        {item.comment_selection && item.comment_selection.length > 0 && (
                           <div>
-                            <p className="text-sm font-medium text-gray-700 mb-1">Selected Comment:</p>
+                            <p className="text-sm font-medium text-gray-700 mb-1">Selected Comments:</p>
                             <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-                              {item.comment_sele}
+                              {item.comment_selection.join(', ')}
                             </p>
                           </div>
                         )}
-                        {item.comment_add && (
+                        {item.comment_additional && (
                           <div>
                             <p className="text-sm font-medium text-gray-700 mb-1">Additional Comment:</p>
                             <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-                              {item.comment_add}
+                              {item.comment_additional}
                             </p>
                           </div>
                         )}
                       </div>
                     )}
 
-                    {!item.comment_sele && !item.comment_add && (
+                    {(!item.comment_selection || item.comment_selection.length === 0) && !item.comment_additional && (
                       <p className="text-sm text-gray-500 italic">No comments provided</p>
                     )}
                   </div>

@@ -51,8 +51,8 @@ export interface Chat {
   model: string;
   archive: boolean;
   feedback: number;
-  comment_sel0: string;
-  comment_add0: string;
+  comment_selection: string[];
+  comment_additional: string;
   updated_on: string;
 }
 

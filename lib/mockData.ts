@@ -19,11 +19,9 @@ export const mockChats = [
     citationsArray: null,
     usedcitationsA: '',
     questions: '',
-    comment_sel0: '',
-    comment_add0: '',
+    comment_selection: ['Great explanation of tax deductions'],
+    comment_additional: 'Very helpful for my business planning',
     updated_on: '2024-01-15T10:35:00Z',
-    comment_sele: 'Great explanation of tax deductions',
-    comment_add: 'Very helpful for my business planning',
   },
   {
     id: 2,
@@ -44,11 +42,9 @@ export const mockChats = [
     citationsArray: null,
     usedcitationsA: '',
     questions: '',
-    comment_sel0: '',
-    comment_add0: '',
+    comment_selection: ['Comprehensive investment advice'],
+    comment_additional: 'Exactly what I needed for my portfolio',
     updated_on: '2024-01-14T14:25:00Z',
-    comment_sele: 'Comprehensive investment advice',
-    comment_add: 'Exactly what I needed for my portfolio',
   },
   {
     id: 3,
@@ -69,11 +65,9 @@ export const mockChats = [
     citationsArray: null,
     usedcitationsA: '',
     questions: '',
-    comment_sel0: '',
-    comment_add0: '',
+    comment_selection: ['Good basic information'],
+    comment_additional: 'Could use more specific examples',
     updated_on: '2024-01-13T09:20:00Z',
-    comment_sele: 'Good basic information',
-    comment_add: 'Could use more specific examples',
   },
 ];
 
@@ -232,7 +226,7 @@ export function getMockFeedback(filters: {
       title: chat.title,
       email: chat.email,
       feedback: chat.feedback,
-      comment_sele: chat.comment_sele || '',
-      comment_add: chat.comment_add || '',
+      comment_selection: chat.comment_selection || [],
+      comment_additional: chat.comment_additional || '',
     }));
 }
