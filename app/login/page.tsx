@@ -33,8 +33,8 @@ export default function LoginPage() {
       console.log('Login response:', data);
 
       if (response.ok) {
-        router.push('/admin');
-        router.refresh();
+        // Force a hard redirect to ensure middleware runs
+        window.location.href = '/admin';
       } else {
         setError(data.error || 'Invalid username or password. Please check your credentials and try again.');
       }
