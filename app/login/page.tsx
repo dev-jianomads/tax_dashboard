@@ -33,8 +33,9 @@ export default function LoginPage() {
       console.log('Login response:', data);
 
       if (response.ok) {
-        // Force a full page navigation to ensure middleware runs
-        window.location.href = '/admin';
+        // Use router.push with refresh to ensure middleware runs
+        router.push('/admin');
+        router.refresh();
       } else {
         setError(data.error || 'Invalid username or password. Please check your credentials and try again.');
       }
