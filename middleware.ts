@@ -8,6 +8,10 @@ const secret = new TextEncoder().encode(
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Add debug logging for cookie
+  const token = request.cookies.get('auth-session')?.value;
+  console.log('Middleware - Path:', pathname, 'Token exists:', !!token);
+
   // Skip middleware for login page and public assets
   if (pathname === '/login' || pathname.startsWith('/_next') || pathname.startsWith('/favicon') || pathname.startsWith('/api/auth/login')) {
     return NextResponse.next();

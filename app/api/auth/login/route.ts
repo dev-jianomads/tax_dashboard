@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
       // Set a secure JWT session cookie
       response.cookies.set('auth-session', token, {
         httpOnly: true,
-        secure: false, // Set to false for development
-        sameSite: 'lax',
+        secure: true, // Required for SameSite=None
+        sameSite: 'none', // Required for iframe/cross-origin
         maxAge: 60 * 60 * 24, // 24 hours
         path: '/',
       });
