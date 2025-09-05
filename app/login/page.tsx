@@ -33,8 +33,10 @@ export default function LoginPage() {
       console.log('Login response:', data);
 
       if (response.ok) {
-        // Force a hard redirect to ensure middleware runs
-        window.location.href = '/admin';
+        // Small delay to ensure cookie is set, then redirect
+        setTimeout(() => {
+          window.location.replace('/admin');
+        }, 100);
       } else {
         setError(data.error || 'Invalid username or password. Please check your credentials and try again.');
       }
@@ -62,16 +64,18 @@ export default function LoginPage() {
           <CardTitle className="text-2xl font-semibold">Praxio AI Dashboard</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
+                name="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 disabled={isLoading}
+                autoComplete="username"
               />
             </div>
             <div className="space-y-2">
@@ -79,18 +83,21 @@ export default function LoginPage() {
               <div className="relative">
                 <Input
                   id="password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={isLoading}
                   className="pr-10"
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   disabled={isLoading}
+                  tabIndex={-1}
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
