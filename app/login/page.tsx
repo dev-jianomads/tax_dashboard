@@ -36,7 +36,7 @@ export default function LoginPage() {
         router.push('/admin');
         router.refresh();
       } else {
-        setError(data.error || 'Invalid credentials');
+        setError(data.error || 'Invalid username or password. Please check your credentials and try again.');
       }
     } catch (err) {
       console.error('Login error:', err);
