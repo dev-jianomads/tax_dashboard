@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 
 const secret = new TextEncoder().encode(
@@ -22,11 +21,15 @@ export async function POST(request: NextRequest) {
 
       const response = NextResponse.json({ success: true });
       
-      // Set a secure JWT session cookie
+      // Detect if we're in an iframe/cross-origin context
+      const isIframe = request.headers.get('sec-fetch-dest') === 'iframe' || 
+                      request.headers.get('sec-fetch-site') === 'cross-site';
+      
+      // Set cookie with appropriate settings for environment
       response.cookies.set('auth-session', token, {
         httpOnly: true,
-        secure: true, // Required for SameSite=None
-        sameSite: 'none', // Required for iframe/cross-origin
+        secure: true, // Always true for production
+        sameSite: isIframe ? 'none' : 'lax', // 'none' for iframe, 'lax' for standalone
         maxAge: 60 * 60 * 24, // 24 hours
         path: '/',
       });
