@@ -33,10 +33,8 @@ export default function LoginPage() {
       console.log('Login response:', data);
 
       if (response.ok) {
-        // Small delay to ensure cookie is set, then redirect
-        setTimeout(() => {
-          window.location.replace('/admin');
-        }, 100);
+        // Force a full page navigation to ensure middleware runs
+        window.location.href = '/admin';
       } else {
         setError(data.error || 'Invalid username or password. Please check your credentials and try again.');
       }
