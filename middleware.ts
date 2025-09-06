@@ -16,12 +16,18 @@ export async function middleware(request: NextRequest) {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400',
       },
     });
   }
 
   // Skip middleware for login page and public assets
-  if (pathname === '/login' || pathname.startsWith('/_next') || pathname.startsWith('/favicon') || pathname.startsWith('/api/auth/login')) {
+  if (pathname === '/login' || 
+      pathname.startsWith('/_next') || 
+      pathname.startsWith('/favicon') || 
+      pathname.startsWith('/api/auth/login') ||
+      pathname.includes('appsignal') ||
+      pathname.includes('analytics')) {
     return NextResponse.next();
   }
 
@@ -53,7 +59,13 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // Add CORS headers to all responses
+  const response = NextResponse.next();
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  return response;
 }
 
 export const config = {

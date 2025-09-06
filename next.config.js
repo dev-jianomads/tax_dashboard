@@ -5,11 +5,16 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   serverExternalPackages: ['@react-pdf/renderer'],
+  // Disable telemetry and external requests that cause CORS issues
+  telemetry: false,
+  experimental: {
+    instrumentationHook: false,
+  },
   async headers() {
     return [
       {
-        // Apply CORS headers to all API routes
-        source: '/api/:path*',
+        // Apply CORS headers to all routes
+        source: '/(.*)',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
@@ -22,6 +27,14 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Headers',
             value: 'Content-Type, Authorization',
+          },
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'unsafe-none',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
           },
         ],
       },
