@@ -4,9 +4,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  experimental: {
-    serverComponentsExternalPackages: ['@react-pdf/renderer'],
-  },
+  serverExternalPackages: ['@react-pdf/renderer'],
 };
 
 module.exports = nextConfig;
