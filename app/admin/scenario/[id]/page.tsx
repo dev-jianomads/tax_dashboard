@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatDate, formatProcessTime } from '@/lib/utils';
-import { supabase, type Conversation } from '@/lib/supabase';
+import { supabase, type Conversation } from '@/lib/supabaseServer';
 import { ArrowLeft, User, Bot, Clock, Mail, Archive, Star, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
