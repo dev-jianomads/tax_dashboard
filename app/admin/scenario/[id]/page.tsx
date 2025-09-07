@@ -4,7 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatDate, formatProcessTime } from '@/lib/utils';
-import { supabase, type Conversation } from '@/lib/supabaseServer';
+import { supabase } from '@/lib/supabase';
+import { getMockScenario } from '@/lib/mockData';
+import type { Conversation } from '@/lib/supabase';
 import { ArrowLeft, User, Bot, Clock, Mail, Archive, Star, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
@@ -19,28 +21,53 @@ export default async function ScenarioPage({ params }: ScenarioPageProps) {
     notFound();
   }
 
-  const client = supabase();
-  
-  // Fetch chat details
-  const { data: chat, error: chatError } = await client
-    .from('chat')
-    .select('*')
-    .eq('id', id)
-    .single();
+  let chat = null;
+  let conversationMessages: Conversation[] = [];
 
-  if (chatError || !chat) {
-    notFound();
+  try {
+    const client = supabase();
+    
+    // Fetch chat details
+    const { data: chatData, error: chatError } = await client
+      .from('chat')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (chatError || !chatData) {
+      // Fall back to mock data
+      const mockResult = getMockScenario(id);
+      if (!mockResult) {
+        notFound();
+      }
+      chat = mockResult.chat;
+      conversationMessages = mockResult.conversations;
+    } else {
+      chat = chatData;
+      
+      // Fetch last 10 conversation messages (DESC order)
+      const { data: conversations, error: convError } = await client
+        .from('conversation')
+        .select('*')
+        .eq('chat_id', id)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      conversationMessages = conversations || [];
+    }
+  } catch (error) {
+    // Fall back to mock data on any error
+    const mockResult = getMockScenario(id);
+    if (!mockResult) {
+      notFound();
+    }
+    chat = mockResult.chat;
+    conversationMessages = mockResult.conversations;
   }
 
-  // Fetch last 10 conversation messages (DESC order)
-  const { data: conversations, error: convError } = await client
-    .from('conversation')
-    .select('*')
-    .eq('chat_id', id)
-    .order('created_at', { ascending: false })
-    .limit(10);
-
-  const conversationMessages: Conversation[] = conversations || [];
+  if (!chat) {
+    notFound();
+  }
 
   return (
     <DashboardLayout>

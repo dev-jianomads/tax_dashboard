@@ -5,6 +5,9 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   output: 'standalone',
+  experimental: {
+    serverComponentsExternalPackages: ['@react-pdf/renderer'],
+  },
   async headers() {
     return [
       {
