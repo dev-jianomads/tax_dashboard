@@ -222,7 +222,7 @@ export async function POST(request: NextRequest) {
       const pdfDoc = <PDFReport filters={filters} metrics={metrics} latestScenarios={latestFive} />;
       const pdfBuffer = await pdf(pdfDoc).toBuffer();
 
-      return new NextResponse(pdfBuffer, {
+      return new Response(pdfBuffer as Uint8Array, {
         headers: {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="praxio-ai-report-${new Date().toISOString().split('T')[0]}.pdf"`,
@@ -235,7 +235,7 @@ export async function POST(request: NextRequest) {
       const pdfDoc = <PDFReport filters={filters} metrics={metrics} latestScenarios={metrics.latestFive} />;
       const pdfBuffer = await pdf(pdfDoc).toBuffer();
 
-      return new NextResponse(pdfBuffer, {
+      return new Response(pdfBuffer as Uint8Array, {
         headers: {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="praxio-ai-report-${new Date().toISOString().split('T')[0]}.pdf"`,

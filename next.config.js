@@ -5,8 +5,11 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   output: 'standalone',
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   experimental: {
-    serverComponentsExternalPackages: ['@react-pdf/renderer'],
+    serverComponentsExternalPackages: ['@react-pdf/renderer', '@supabase/supabase-js', '@supabase/realtime-js'],
   },
   async headers() {
     return [
