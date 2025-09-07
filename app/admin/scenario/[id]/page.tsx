@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatDate, formatProcessTime } from '@/lib/utils';
-import { supabase } from '@/lib/supabase';
+import { supabase, type Conversation } from '@/lib/supabase';
 import { ArrowLeft, User, Bot, Clock, Mail, Archive, Star, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
@@ -40,7 +40,7 @@ export default async function ScenarioPage({ params }: ScenarioPageProps) {
     .order('created_at', { ascending: false })
     .limit(10);
 
-  const conversationMessages = conversations || [];
+  const conversationMessages: Conversation[] = conversations || [];
 
   return (
     <DashboardLayout>
@@ -161,7 +161,7 @@ export default async function ScenarioPage({ params }: ScenarioPageProps) {
             <CardContent>
               {conversationMessages.length > 0 ? (
                 <div className="space-y-6">
-                  {conversationMessages.map((message) => (
+                  {conversationMessages.map((message: Conversation) => (
                     <div key={message.id} className="flex space-x-4">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                         message.type === 'user' 

@@ -4,7 +4,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  serverExternalPackages: ['@react-pdf/renderer'],
   output: 'standalone',
   async headers() {
     return [
