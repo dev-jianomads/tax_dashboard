@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     color: '#4b5563',
   },
   table: {
-    display: 'table',
+    display: 'flex',
+    flexDirection: 'column',
     width: 'auto',
     borderStyle: 'solid',
     borderWidth: 1,
@@ -43,7 +44,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   tableRow: {
-    margin: 'auto',
     flexDirection: 'row',
   },
   tableHeader: {
