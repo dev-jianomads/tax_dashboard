@@ -3,7 +3,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+  images: { 
+    unoptimized: true 
+  },
   output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
@@ -31,6 +33,18 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  // Add webpack configuration to handle potential module issues
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
   },
 };
 
